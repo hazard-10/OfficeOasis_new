@@ -24,6 +24,13 @@ namespace Wave.Essence.Samples.PassThrough
 		float alpha = 1.0f;
 		float alpha2 = 1.0f;
 		int steps = 0;
+
+		float v1_step = .01f;
+		float v1_init = 0f;
+
+		private GameObject leftCtrl;
+		float ctrlLastX;
+		float ctrlLastY;
 		// Start is called before the first frame update
 		void Start()
 		{
@@ -31,11 +38,15 @@ namespace Wave.Essence.Samples.PassThrough
 			showPassThroughOverlay = Interop.WVR_ShowPassthroughOverlay(passThroughOverlayFlag);
 			Interop.WVR_ShowProjectedPassthrough(false);
 			Log.i(LOG_TAG, "ShowPassThroughOverlay start: " + showPassThroughOverlay);
+
+			leftCtrl = GameObject.Find("XR Origin/Camera Offset/LeftHand Controller");
+			 ctrlLastX = leftCtrl.transform.position.x;
+			 ctrlLastY = leftCtrl.transform.position.y;
 		}
 
 		// Update is called once per frame
 		void Update()
-		{
+		{	
 			if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Right, WVR_InputId.WVR_InputId_Alias1_A))
 			{
 				bool visible = !Interop.WVR_IsPassthroughOverlayVisible();
@@ -65,6 +76,7 @@ namespace Wave.Essence.Samples.PassThrough
 					Log.i(LOG_TAG, "WVR_ShowPassthroughOverlay: visible:" + visible + " ,delaySubmit: " + delaySubmit + " ,showIndicator: " + showIndicator);
 					alpha = 1.0f;
 					Interop.WVR_SetPassthroughOverlayAlpha(alpha);
+					Interop.WVR_ShowPassthroughUnderlay(true);
 			    }
 				else
 				{
@@ -83,9 +95,136 @@ namespace Wave.Essence.Samples.PassThrough
 				{
 					alpha2 = 1.0f;
 					WVR_Pose_t pose = new WVR_Pose_t();
-					pose.position.v0 = 0.0f;
+					pose.position.v0 = -1.0f;
 					pose.position.v1 = 1.0f;
-					pose.position.v2 = -0.5f;
+					pose.position.v2 = -5.0f;
+					pose.rotation.w = 1.0f;
+					pose.rotation.x = 0.0f;
+					pose.rotation.y = 0.0f;
+					pose.rotation.z = 0.0f;
+					Interop.WVR_SetProjectedPassthroughPose(ref pose);
+
+					float size = 0.25f;
+					float[] vertex = { -size, -size, 0.0f,
+							  size, -size, 0.0f,
+							  size, size, 0.0f,
+							  -size, size, 0.0f };
+					uint[] indices = { 0, 1, 2, 0, 2, 3 };
+					Interop.WVR_SetProjectedPassthroughMesh(vertex, (uint)vertex.Length, indices, (uint)indices.Length);
+					Interop.WVR_SetProjectedPassthroughAlpha(alpha2);
+					Interop.WVR_ShowProjectedPassthrough(visible);
+					Log.i(LOG_TAG, "WVR_ShowProjectedPassthrough: " + alpha2);
+				}
+				else
+				{
+					Interop.WVR_ShowProjectedPassthrough(visible);
+				}
+			}
+			else if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Left, WVR_InputId.WVR_InputId_Alias1_Y))
+			{
+				alpha2 -= 0.1f;
+				if (alpha2 < 0.0f)
+				{
+					alpha2 = 1.0f;
+				}
+				Interop.WVR_SetProjectedPassthroughAlpha(alpha2);
+				Log.i(LOG_TAG, "WVR_SetProjectedPassthroughAlpha: " + alpha2);
+			}
+			else if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Right, WVR_InputId.WVR_InputId_Alias1_B))
+			{
+				alpha -= 0.1f;
+				if (alpha < 0.0f)
+				{
+					alpha = 1.0f;
+				}
+				Interop.WVR_SetPassthroughOverlayAlpha(alpha);
+				Log.i(LOG_TAG, "SetPassthroughOverlayAlpha: " + alpha);
+			}
+
+		}
+
+		void backup_two(){
+					{	
+			v1_init += v1_step;
+				
+			alpha2 = 1.0f;
+			WVR_Pose_t pose = new WVR_Pose_t();
+			// pose.position.v0 = v1_init;
+			pose.position.v0 = (leftCtrl.transform.position.x - ctrlLastX);
+			pose.position.v1 = (leftCtrl.transform.position.y - ctrlLastY);
+			pose.position.v2 = -5.0f;
+			pose.rotation.w = 1.0f;
+			pose.rotation.x = 0.0f;
+			pose.rotation.y = 0.0f;
+			pose.rotation.z = 0.0f;
+			Interop.WVR_SetProjectedPassthroughPose(ref pose);
+
+			float size = 1.2f;
+			float[] vertex = { -size, -size, 0.0f,
+						size, -size, 0.0f,
+						size, size, 0.0f,
+						-size, size, 0.0f };
+			uint[] indices = { 0, 1, 2, 0, 2, 3 };
+			Interop.WVR_SetProjectedPassthroughMesh(vertex, (uint)vertex.Length, indices, (uint)indices.Length);
+			Interop.WVR_SetProjectedPassthroughAlpha(alpha2);
+			Interop.WVR_ShowProjectedPassthrough(true);
+			Log.i(LOG_TAG, "WVR_ShowProjectedPassthrough: " + alpha2);
+
+		}
+		}
+
+		void original_update(){
+			if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Right, WVR_InputId.WVR_InputId_Alias1_A))
+			{
+				bool visible = !Interop.WVR_IsPassthroughOverlayVisible();
+				if (visible)
+				{
+					if (steps == 0)
+					{
+						delaySubmit = false;
+						showIndicator = false;
+					}
+					else if (steps == 1)
+					{
+						delaySubmit = true;
+						showIndicator = false;
+					}
+					else if (steps == 2)
+					{
+						delaySubmit = false;
+						showIndicator = true;
+					}
+					else if (steps == 3)
+					{
+						delaySubmit = true;
+						showIndicator = true;
+					}
+					Interop.WVR_ShowPassthroughOverlay(visible, delaySubmit, showIndicator);
+					Log.i(LOG_TAG, "WVR_ShowPassthroughOverlay: visible:" + visible + " ,delaySubmit: " + delaySubmit + " ,showIndicator: " + showIndicator);
+					alpha = 1.0f;
+					Interop.WVR_SetPassthroughOverlayAlpha(alpha);
+					Interop.WVR_ShowPassthroughUnderlay(true);
+			    }
+				else
+				{
+					Interop.WVR_ShowPassthroughOverlay(visible);
+					steps++;
+					if (steps >= 4)
+					{
+						steps = 0;
+					}
+				}
+			}
+			else if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Left, WVR_InputId.WVR_InputId_Alias1_X))
+			{
+				bool visible = !Interop.WVR_IsPassthroughOverlayVisible();
+				if (visible)
+				{
+					alpha2 = 1.0f;
+					WVR_Pose_t pose = new WVR_Pose_t();
+					pose.position.v0 = -1.0f;
+					pose.position.v1 = 1.0f;
+					pose.position.v2 = -5.0f;
 					pose.rotation.w = 1.0f;
 					pose.rotation.x = 0.0f;
 					pose.rotation.y = 0.0f;
