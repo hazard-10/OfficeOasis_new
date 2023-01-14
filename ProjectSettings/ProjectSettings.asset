@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: kriti
+  companyName: DefaultCompany
   productName: OfficeOasis_new
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
