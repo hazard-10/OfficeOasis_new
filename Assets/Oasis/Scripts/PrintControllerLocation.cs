@@ -7,7 +7,7 @@ public class PrintControllerLocation : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] GameObject ctrl;
+    [SerializeField] string name;
     Text text;
 
     void Start()
@@ -18,6 +18,6 @@ public class PrintControllerLocation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = ctrl.transform.position.ToString() + " ceck";
+        text.text = GameObject.Find(name).transform.position.ToString();
     }
 }

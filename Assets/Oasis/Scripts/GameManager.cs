@@ -6,27 +6,44 @@ public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private GameObject leftCtrl;
-    private GameObject rightCtrl;
+    public GameObject leftCtrl;
+    public GameObject rightCtrl;
+
+    private bool wristSet = false;
+    
+    [SerializeField] GameObject wristDisplay;
     void Start()
     {
-        while (leftCtrl == null )
-        {
-            leftCtrl = GameObject.Find("InteractionModeManager (1)/LeftHand");
-        }
-        while (leftCtrl == null )
-        {
-            rightCtrl = GameObject.Find("InteractionModeManager (1)/RightHand");
-        }
+        // while (leftCtrl == null )
+        // {
+            leftCtrl = GameObject.Find("LeftPointer");
+        // }
+        // while (leftCtrl == null )
+        // {
+            rightCtrl = GameObject.Find("RightPointer");
+        // }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (leftCtrl == null )
+        {
+            leftCtrl = GameObject.Find("LeftPointer");
+        }
+        if (rightCtrl == null )
+        {
+            rightCtrl = GameObject.Find("RightPointer");
+        }
+
+        if (!wristSet && leftCtrl){
+            setWristDisplay();
+            wristSet = true;
+        }
     }
 
     void setWristDisplay (){
-        
+        wristDisplay.GetComponent<FollowTarget>().target = leftCtrl;
+        wristDisplay.GetComponent<FollowTarget>().StartFollowing();
     }
 }
