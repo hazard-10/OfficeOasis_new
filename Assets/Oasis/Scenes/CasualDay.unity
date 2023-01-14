@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 23256900}
   - component: {fileID: 23256899}
   - component: {fileID: 23256901}
+  - component: {fileID: 23256902}
   m_Layer: 5
   m_Name: LeftController (1)
   m_TagString: Untagged
@@ -214,12 +215,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23256897}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a6f30ec28032cb45bb76f5af6d90126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ctrl: {fileID: 325890291}
+--- !u!114 &23256902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23256897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f029b8274994314bcb0cc160e35955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cube: {fileID: 649727271}
 --- !u!1 &155552578
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,7 +2450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &813180493
 MonoBehaviour:
   m_ObjectHideFlags: 0
