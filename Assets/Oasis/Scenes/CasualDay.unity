@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6f30ec28032cb45bb76f5af6d90126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ctrl: {fileID: 0}
+  ctrl: {fileID: 325890291}
 --- !u!1 &155552578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,12 +1268,12 @@ MonoBehaviour:
       m_Name: Position
       m_Type: 0
       m_ExpectedControlType: Vector3
-      m_Id: 
+      m_Id: 4a1f079b-9aec-4c63-84da-8fdb8a951485
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 
+        m_Id: 9fd61a3c-5256-474d-8558-f84bc926827e
         m_Path: <XRHMD>/centerEyePosition
         m_Interactions: 
         m_Processors: 
@@ -1288,12 +1288,12 @@ MonoBehaviour:
       m_Name: Rotation
       m_Type: 0
       m_ExpectedControlType: Quaternion
-      m_Id: 
+      m_Id: 1cc86407-0053-40a1-918e-ddd0c29744fd
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 
+        m_Id: cbfe1b05-0b40-4071-8844-91d5ee9e4fd3
         m_Path: <XRHMD>/centerEyeRotation
         m_Interactions: 
         m_Processors: 

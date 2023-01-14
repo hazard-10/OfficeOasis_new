@@ -84,8 +84,8 @@ namespace Wave.Essence.Samples.PassThrough
 					alpha2 = 1.0f;
 					WVR_Pose_t pose = new WVR_Pose_t();
 					pose.position.v0 = 0.0f;
-					pose.position.v1 = 0.0f;
-					pose.position.v2 = -2.0f;
+					pose.position.v1 = 1.0f;
+					pose.position.v2 = -0.5f;
 					pose.rotation.w = 1.0f;
 					pose.rotation.x = 0.0f;
 					pose.rotation.y = 0.0f;
