@@ -169,7 +169,7 @@ namespace Wave.Essence.Hand.Model.Demo
 
 		public void OnTrigger()
 		{
-			TeleportRandomly();
+			//TeleportRandomly();
 		}
 	}
 }
