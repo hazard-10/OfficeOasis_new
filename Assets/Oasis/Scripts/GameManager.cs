@@ -9,9 +9,12 @@ public class GameManager : MonoBehaviour
     public GameObject leftCtrl;
     public GameObject rightCtrl;
 
-    private bool wristSet = false;
+    public GameObject cam;
+
+    private bool displaySet = false;
     
     [SerializeField] GameObject wristDisplay;
+    [SerializeField] GameObject itemDisplay;
     void Start()
     {
         // while (leftCtrl == null )
@@ -21,7 +24,12 @@ public class GameManager : MonoBehaviour
         // while (leftCtrl == null )
         // {
             rightCtrl = GameObject.Find("RightPointer");
+
         // }
+    }
+
+    public GameObject getCam(){
+        return cam;
     }
 
     // Update is called once per frame
@@ -36,14 +44,19 @@ public class GameManager : MonoBehaviour
             rightCtrl = GameObject.Find("RightPointer");
         }
 
-        if (!wristSet && leftCtrl){
+        if (!displaySet && leftCtrl){
             setWristDisplay();
-            wristSet = true;
+            setItemDisplay();
+            displaySet = true;
         }
     }
 
     void setWristDisplay (){
         wristDisplay.GetComponent<FollowTarget>().target = leftCtrl;
-        wristDisplay.GetComponent<FollowTarget>().StartFollowing();
+        wristDisplay.GetComponent<FollowTarget>().StartFollowing(new Vector3(0.1f, 0f , 0f));
+    }
+    void setItemDisplay (){
+        itemDisplay.GetComponent<FollowTarget>().target = leftCtrl;
+        itemDisplay.GetComponent<FollowTarget>().StartFollowing(new Vector3(0.1f, 0.2f , 0f));
     }
 }

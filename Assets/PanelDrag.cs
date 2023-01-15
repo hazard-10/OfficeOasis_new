@@ -37,6 +37,7 @@ namespace Wave.Essence.Hand.Model.Demo
 				Log.d(LOG_TAG, msg, true);
 		}
         public bool visited;
+        public int scale;
 		private WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
 		private Vector3 m_Position = Vector3.zero;
 
@@ -66,11 +67,11 @@ namespace Wave.Essence.Hand.Model.Demo
 		public void OnPointerExit(PointerEventData eventData)
 		{
 			// Do nothing
-            if(!visited){
-                scaleChange = new Vector3(3f, 3f, 3f);
-                transform.localScale += scaleChange;
-                visited = true;
-            }
+            // if(!visited){
+            //     scaleChange = new Vector3(1000f, 1000f, 1000f);
+            //     transform.localScale += scaleChange;
+            //     visited = true;
+            // }
 		}
 
 		public void OnPointerDown(PointerEventData eventData)
@@ -92,8 +93,8 @@ namespace Wave.Essence.Hand.Model.Demo
 
 			StartCoroutine("TrackPointer");
            if(!visited){
-                scaleChange = new Vector3(3f, 3f, 3f);
-                transform.localScale += scaleChange;
+                // scaleChange = new Vector3(scale, scale, scale);
+                transform.localScale = transform.localScale * scale;
                 visited = true;
             }
 		}
@@ -115,8 +116,9 @@ namespace Wave.Essence.Hand.Model.Demo
 
 			StopCoroutine("TrackPointer");
             if(!visited){
-                scaleChange = new Vector3(3f, 3f, 3f);
-                transform.localScale += scaleChange;
+                // scaleChange = new Vector3(scale, scale, scale);
+				
+                transform.localScale = transform.localScale * scale;
                 visited = true;
             }
             //transform.localScale = Vector3(Screen.width,1,1);
@@ -129,8 +131,9 @@ namespace Wave.Essence.Hand.Model.Demo
 			m_Position = eventData.enterEventCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, fDistanceInMeter));
 			DEBUG("OnDrop() position: " + m_Position);
            if(!visited){
-                scaleChange = new Vector3(3f, 3f, 3f);
-                transform.localScale += scaleChange;
+                // scaleChange = new Vector3(scale, scale, scale);
+				
+                transform.localScale = transform.localScale * scale;
                 visited = true;
             }
 		}

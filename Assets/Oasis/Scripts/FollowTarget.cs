@@ -7,16 +7,18 @@ public class FollowTarget : MonoBehaviour
     // Start is called before the first frame update
     public GameObject target;
     private bool beginFollow = false;
+    private Vector3 offset;
 
     // Update is called once per frame
     void Update()
     {
         if(beginFollow){
-            transform.position = target.transform.position + new Vector3(0.1f, 0 , 0);
+            transform.position = target.transform.position + offset;
         }
     }
 
-    public void StartFollowing(){
+    public void StartFollowing(Vector3 offs){
         beginFollow = true;
+        offset = offs;
     }
 }

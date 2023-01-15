@@ -31,17 +31,28 @@ namespace Wave.Essence.Samples.PassThrough
 		private GameObject leftCtrl;
 		float ctrlLastX;
 		float ctrlLastY;
+
+		bool seen;
+
+		bool passOn = false;
+		[SerializeField] GameObject canvas;
+		private GameObject cam;
 		// Start is called before the first frame update
 		void Start()
 		{
 			Log.i(LOG_TAG, "PassThroughOverlay start: " + passThroughOverlayFlag);
-			showPassThroughOverlay = Interop.WVR_ShowPassthroughOverlay(passThroughOverlayFlag);
-			Interop.WVR_ShowProjectedPassthrough(false);
+			// showPassThroughOverlay = Interop.WVR_ShowPassthroughOverlay(passThroughOverlayFlag);
+			// Interop.WVR_ShowProjectedPassthrough(false);
 			Log.i(LOG_TAG, "ShowPassThroughOverlay start: " + showPassThroughOverlay);
 
 			leftCtrl = GameObject.Find("XR Origin/Camera Offset/LeftHand Controller");
 			 ctrlLastX = leftCtrl.transform.position.x;
 			 ctrlLastY = leftCtrl.transform.position.y;
+
+			cam = GameObject.Find("GameManager").GetComponent<GameManager>().getCam();
+
+
+
 		}
 
 		// Update is called once per frame
@@ -49,44 +60,61 @@ namespace Wave.Essence.Samples.PassThrough
 		{	
 			if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Right, WVR_InputId.WVR_InputId_Alias1_A))
 			{
-				bool visible = !Interop.WVR_IsPassthroughOverlayVisible();
-				if (visible)
-				{
-					if (steps == 0)
-					{
-						delaySubmit = false;
-						showIndicator = false;
-					}
-					else if (steps == 1)
-					{
-						delaySubmit = true;
-						showIndicator = false;
-					}
-					else if (steps == 2)
-					{
-						delaySubmit = false;
-						showIndicator = true;
-					}
-					else if (steps == 3)
-					{
-						delaySubmit = true;
-						showIndicator = true;
-					}
-					Interop.WVR_ShowPassthroughOverlay(visible, delaySubmit, showIndicator);
-					Log.i(LOG_TAG, "WVR_ShowPassthroughOverlay: visible:" + visible + " ,delaySubmit: " + delaySubmit + " ,showIndicator: " + showIndicator);
-					alpha = 1.0f;
-					Interop.WVR_SetPassthroughOverlayAlpha(alpha);
-					Interop.WVR_ShowPassthroughUnderlay(true);
+				// if(!passOn){
+				// 	cam.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
+				// 	cam.GetComponent<Camera>().backgroundColor = new Vector4(0,0,0,0);
+				// }
+				// bool visible = !Interop.WVR_IsPassthroughOverlayVisible();
+				if (!passOn){
+				// {
+				// 	if (steps == 0)
+				// 	{
+				// 		delaySubmit = false;
+				// 		showIndicator = false;
+				// 	}
+				// 	else if (steps == 1)
+				// 	{
+				// 		delaySubmit = true;
+				// 		showIndicator = false;
+				// 	}
+				// 	else if (steps == 2)
+				// 	{
+				// 		delaySubmit = false;
+				// 		showIndicator = true;
+				// 	}
+				// 	else if (steps == 3)
+				// 	{
+				// 		delaySubmit = true;
+				// 		showIndicator = true;
+				// 	}
+				// 	Interop.WVR_ShowPassthroughOverlay(visible, delaySubmit, showIndicator);
+				// 	Log.i(LOG_TAG, "WVR_ShowPassthroughOverlay: visible:" + visible + " ,delaySubmit: " + delaySubmit + " ,showIndicator: " + showIndicator);
+				// 	alpha = 1.0f;
+				// 	Interop.WVR_SetPassthroughOverlayAlpha(alpha);
+					passOn = true;
+					Interop.WVR_ShowPassthroughUnderlay(passOn);
+					// cam.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
+					// cam.GetComponent<Camera>().backgroundColor = new Vector4(0,0,0,0);
 			    }
 				else
 				{
-					Interop.WVR_ShowPassthroughOverlay(visible);
-					steps++;
-					if (steps >= 4)
-					{
-						steps = 0;
-					}
+					
+					// Interop.WVR_ShowPassthroughOverlay(visible);
+					passOn = false;
+					Interop.WVR_ShowPassthroughUnderlay(passOn);
+					cam.GetComponent<Camera>().clearFlags = CameraClearFlags.Skybox;
+					cam.GetComponent<Camera>().backgroundColor = Color.blue;
+					
+					// cam.GetComponent<Camera>().clearFlags = CameraClearFlags.Skybox;
+					// cam.GetComponent<Camera>().backgroundColor = new Vector4(0,0,0,0);
+					// steps++;
+					// if (steps >= 4)
+					// {
+					// 	steps = 0;
+					// }
 				}
+				cam.GetComponent<Camera>().clearFlags = CameraClearFlags.Skybox;
+				cam.GetComponent<Camera>().backgroundColor = Color.blue;
 			}
 			else if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Left, WVR_InputId.WVR_InputId_Alias1_X))
 			{
@@ -122,13 +150,23 @@ namespace Wave.Essence.Samples.PassThrough
 			}
 			else if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Left, WVR_InputId.WVR_InputId_Alias1_Y))
 			{
-				alpha2 -= 0.1f;
-				if (alpha2 < 0.0f)
-				{
-					alpha2 = 1.0f;
+				// alpha2 -= 0.1f;
+				// if (alpha2 < 0.0f)
+				// {
+				// 	alpha2 = 1.0f;
+				// }
+				// Interop.WVR_SetProjectedPassthroughAlpha(alpha2);
+				// Log.i(LOG_TAG, "WVR_SetProjectedPassthroughAlpha: " + alpha2);
+
+				if(!seen){
+					seen = true;
+					canvas.SetActive(seen);
 				}
-				Interop.WVR_SetProjectedPassthroughAlpha(alpha2);
-				Log.i(LOG_TAG, "WVR_SetProjectedPassthroughAlpha: " + alpha2);
+				else{
+					seen = false;
+					canvas.SetActive(seen);
+
+				}
 			}
 			else if (WXRDevice.ButtonPress(WVR_DeviceType.WVR_DeviceType_Controller_Right, WVR_InputId.WVR_InputId_Alias1_B))
 			{
