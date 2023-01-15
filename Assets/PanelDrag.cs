@@ -17,7 +17,7 @@ using Wave.Essence.Raycast;
 namespace Wave.Essence.Hand.Model.Demo
 {
 	[DisallowMultipleComponent]
-	public class NaturalHandCube : MonoBehaviour,
+	public class PanelDrag : MonoBehaviour,
 		IPointerEnterHandler,
 		IHoverHandler,
 		IPointerExitHandler,
@@ -36,13 +36,17 @@ namespace Wave.Essence.Hand.Model.Demo
 			if (Log.EnableDebugLog)
 				Log.d(LOG_TAG, msg, true);
 		}
-
+        public bool visited;
 		private WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
 		private Vector3 m_Position = Vector3.zero;
+
+        private Vector3 scaleChange;
 		private float fDistanceInMeter = 0;
 		void OnEnable()
 		{
 			fDistanceInMeter = transform.position.z;
+            // scaleChange = new Vector3(10f, 10f, 10f);
+            // transform.localScale += scaleChange;
 		}
 
 		private void TeleportRandomly()
@@ -62,6 +66,11 @@ namespace Wave.Essence.Hand.Model.Demo
 		public void OnPointerExit(PointerEventData eventData)
 		{
 			// Do nothing
+            if(!visited){
+                scaleChange = new Vector3(3f, 3f, 3f);
+                transform.localScale += scaleChange;
+                visited = true;
+            }
 		}
 
 		public void OnPointerDown(PointerEventData eventData)
@@ -82,6 +91,11 @@ namespace Wave.Essence.Hand.Model.Demo
 			DEBUG("OnBeginDrag() position: " + m_Position);
 
 			StartCoroutine("TrackPointer");
+           if(!visited){
+                scaleChange = new Vector3(3f, 3f, 3f);
+                transform.localScale += scaleChange;
+                visited = true;
+            }
 		}
 
 		public void OnDrag(PointerEventData eventData)
@@ -96,15 +110,29 @@ namespace Wave.Essence.Hand.Model.Demo
 
 		public void OnEndDrag(PointerEventData eventData)
 		{
-			DEBUG("OnEndDrag() position: " + m_Position);
+			
+            DEBUG("OnEndDrag() position: " + m_Position);
 
 			StopCoroutine("TrackPointer");
+            if(!visited){
+                scaleChange = new Vector3(3f, 3f, 3f);
+                transform.localScale += scaleChange;
+                visited = true;
+            }
+            //transform.localScale = Vector3(Screen.width,1,1);
+    
+            
 		}
 
 		public void OnDrop(PointerEventData eventData)
 		{
 			m_Position = eventData.enterEventCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, fDistanceInMeter));
 			DEBUG("OnDrop() position: " + m_Position);
+           if(!visited){
+                scaleChange = new Vector3(3f, 3f, 3f);
+                transform.localScale += scaleChange;
+                visited = true;
+            }
 		}
 
 		public void OnHover(RaycastEventData eventData)
@@ -170,6 +198,7 @@ namespace Wave.Essence.Hand.Model.Demo
 		public void OnTrigger()
 		{
 			TeleportRandomly();
+            //m_Position = transform.position;
 		}
 	}
 }
