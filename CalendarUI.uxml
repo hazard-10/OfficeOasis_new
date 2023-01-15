@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/CalendarStyling.uss?fileID=7433441132597879392&amp;guid=06c56cb23abba3a4bac2fba0f5eb4c0f&amp;type=3#CalendarStyling" />
+    <ui:VisualElement>
+        <ui:TextField picking-mode="Ignore" label="SUNDAY" max-length="-1" class="calStyle" style="height: 91px; color: rgba(255, 3, 38, 255); width: 130px; justify-content: center; align-items: stretch; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; font-size: 30px; position: relative; opacity: 1; flex-direction: column;" />
+    </ui:VisualElement>
+</ui:UXML>

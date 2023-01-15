@@ -1,0 +1,8 @@
+.calStyle {
+    font-size: 60px;
+    opacity: 1;
+    display: flex;
+    width: 500px;
+    height: 500px;
+    color: rgba(106, 26, 37, 255);
+}
